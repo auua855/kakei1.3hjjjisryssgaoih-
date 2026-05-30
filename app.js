@@ -366,18 +366,20 @@ function drawDonutChart(sums, total) {
     const ctx = canvas.getContext('2d');
     
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    const size = 160; // 表示サイズを160pxに固定
+    
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    
     ctx.scale(dpr, dpr);
 
-    const width = rect.width;
-    const height = rect.height;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const radius = Math.min(width, height) / 2 - 10;
+    const centerX = size / 2;
+    const centerY = size / 2;
+    const radius = size / 2 - 10;
 
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, size, size);
 
     if (total === 0) {
         ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary').trim() || '#8e8e93';

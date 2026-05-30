@@ -86,7 +86,7 @@
                 <h3 class="section-title">支出内訳 (円グラフ)</h3>
                 <div class="chart-wrapper">
                     <div class="canvas-holder">
-                        <canvas id="analysisChart" width="220" height="220"></canvas>
+                        <canvas id="analysisChart" width="160" height="160"></canvas>
                     </div>
                     <div id="chartLegend" class="chart-legend">
                         <!-- 凡例がJSで挿入される -->
@@ -121,6 +121,15 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js');
+            });
+            
+            // サービスワーカーが更新されてアクティブになったら自動でリロードして最新版を適用
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    window.location.reload();
+                    refreshing = true;
+                }
             });
         }
     </script>

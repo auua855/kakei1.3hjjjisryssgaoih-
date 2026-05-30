@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kakei2-v2';
+const CACHE_NAME = 'kakei2-v3';
 const ASSETS = [
     './',
     './index.html',
@@ -13,6 +13,7 @@ self.addEventListener('install', (e) => {
             return cache.addAll(ASSETS);
         })
     );
+    self.skipWaiting(); // 新しいSWを待機させずに即時適用候補にする
 });
 
 self.addEventListener('fetch', (e) => {
@@ -23,13 +24,15 @@ self.addEventListener('fetch', (e) => {
     );
 });
 
-// 古いキャッシュの削除
+// 古いキャッシュの削除と即時制御の開始
 self.addEventListener('activate', (e) => {
     e.waitUntil(
         caches.keys().then((keys) => {
             return Promise.all(
                 keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
+        }).then(() => {
+            return self.clients.claim(); // 制御を即時に開始
         })
     );
 });
